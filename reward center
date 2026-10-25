@@ -1,0 +1,993 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Eco Fusion 360 | Reward Center</title>
+
+<style>
+:root {
+    --bg: #06140e;
+    --panel: #0c2418;
+    --panel2: #103523;
+    --green: #43ff91;
+    --mint: #a8ffd0;
+    --text: #effff5;
+    --muted: #9bb9a7;
+    --line: #24523a;
+    --gold: #ffd66b;
+    --card-hover: #14402a;
+}
+* { box-sizing: border-box; }
+
+body {
+    margin: 0;
+    background: radial-gradient(ellipse at 80% 0%, #12482b 0, transparent 35%), var(--bg);
+    color: var(--text);
+    font-family: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
+    min-height: 100vh;
+}
+
+header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    padding: 18px 5%;
+    border-bottom: 1px solid var(--line);
+    background: rgba(6, 20, 14, 0.88);
+    backdrop-filter: blur(8px);
+    position: sticky;
+    top: 0;
+    z-index: 100;
+}
+
+.brand { 
+    font-weight: 900; 
+    letter-spacing: .5px;
+    font-size: 19px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+.brand span { color: var(--green); }
+
+.pill {
+    border: 1px solid #2d704a;
+    border-radius: 999px;
+    padding: 8px 16px;
+    color: var(--mint);
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+    background: rgba(16, 53, 35, 0.4);
+}
+
+main {
+    max-width: 1180px;
+    margin: auto;
+    padding: 28px 20px 60px;
+}
+
+.stats {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 14px;
+    margin-bottom: 22px;
+}
+
+.stat, .panel, .reward {
+    border: 1px solid var(--line);
+    background: linear-gradient(145deg, var(--panel2), var(--panel));
+    border-radius: 18px;
+    padding: 20px;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.25);
+}
+
+.stat small { 
+    color: var(--muted); 
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 1.2px;
+    text-transform: uppercase;
+}
+
+.stat strong {
+    display: block;
+    font-size: 28px;
+    margin-top: 8px;
+    color: var(--green);
+    font-weight: 800;
+}
+
+.panel h2 {
+    margin: 0 0 6px;
+    font-size: 22px;
+    font-weight: 800;
+}
+
+.panel p {
+    color: var(--muted);
+    font-size: 13px;
+    line-height: 1.5;
+    margin: 0 0 16px;
+}
+
+.profile-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 14px;
+    margin-bottom: 14px;
+}
+
+.token-row {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    gap: 14px;
+    align-items: end;
+}
+
+.field label {
+    display: block;
+    color: var(--muted);
+    font-size: 12px;
+    margin-bottom: 7px;
+    font-weight: 600;
+}
+
+.field input, .field select {
+    width: 100%;
+    padding: 12px 14px;
+    border-radius: 10px;
+    border: 1px solid var(--line);
+    background: #06170f;
+    color: var(--text);
+    font-size: 14px;
+    outline: none;
+    transition: border-color .2s, box-shadow .2s;
+}
+
+.field input:focus, .field select:focus {
+    border-color: var(--green);
+    box-shadow: 0 0 0 3px rgba(67, 255, 145, 0.15);
+}
+
+.section-head {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: 15px;
+    margin: 35px 0 15px;
+}
+
+.section-head h2 { 
+    margin: 0; 
+    font-size: 24px; 
+    font-weight: 800;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+.section-head p { 
+    margin: 6px 0 0; 
+    font-size: 13px; 
+    color: var(--muted);
+}
+
+.progress-track {
+    height: 9px;
+    background: #07150e;
+    border: 1px solid #1a3f2c;
+    border-radius: 999px;
+    overflow: hidden;
+    margin: 12px 0 22px;
+}
+
+.progress-bar {
+    height: 100%;
+    width: 0%;
+    background: linear-gradient(90deg, #1aa356, var(--green));
+    transition: width 0.4s ease;
+}
+
+.rewards {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 18px;
+}
+
+.reward {
+    display: flex;
+    flex-direction: column;
+    min-height: 310px;
+    position: relative;
+    overflow: hidden;
+    transition: transform .2s, border-color .2s, box-shadow .2s;
+}
+
+.reward:hover {
+    transform: translateY(-3px);
+    border-color: #3b8159;
+    box-shadow: 0 12px 30px rgba(0, 0, 0, 0.35);
+}
+
+.reward:before {
+    content: "";
+    position: absolute;
+    width: 160px;
+    height: 160px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(67, 255, 145, 0.12) 0%, transparent 70%);
+    right: -60px;
+    top: -65px;
+    pointer-events: none;
+}
+
+.reward-header {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    margin-bottom: 10px;
+    padding-right: 75px;
+}
+
+.reward-icon {
+    font-size: 26px;
+    line-height: 1;
+    background: rgba(67, 255, 145, 0.08);
+    border: 1px solid #1d4d33;
+    padding: 8px;
+    border-radius: 12px;
+}
+
+.reward h3 { 
+    margin: 0; 
+    font-size: 18px; 
+    font-weight: 800;
+    color: var(--text);
+    line-height: 1.3;
+}
+
+.reward p { 
+    font-size: 13px; 
+    color: var(--muted);
+    margin: 0 0 16px; 
+    flex: 1; 
+    line-height: 1.5;
+}
+
+.cost {
+    color: var(--gold);
+    font-weight: 800;
+    font-size: 14px;
+    margin-bottom: 14px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    text-align: center;
+    border: 0;
+    border-radius: 10px;
+    padding: 12px 18px;
+    font-weight: 800;
+    font-size: 14px;
+    cursor: pointer;
+    background: var(--green);
+    color: #062012;
+    text-decoration: none;
+    transition: transform .15s, opacity .15s, filter .15s;
+}
+
+.btn:hover { 
+    transform: translateY(-1px); 
+    filter: brightness(1.08);
+}
+
+.btn:disabled { 
+    cursor: not-allowed; 
+    opacity: .45; 
+    transform: none; 
+    background: #173b28;
+    color: var(--muted);
+    border: 1px solid #234c35;
+}
+
+.btn.secondary { 
+    background: #153d29; 
+    color: var(--mint); 
+    border: 1px solid #2c6945; 
+}
+.btn.secondary:hover {
+    background: #1d5036;
+}
+
+.btn.full { width: 100%; }
+
+.btn.read-now {
+    background: linear-gradient(135deg, #43ff91, #18b560);
+    color: #041a0e;
+    font-weight: 900;
+    box-shadow: 0 4px 16px rgba(67, 255, 145, 0.28);
+}
+
+.reading-link-wrapper {
+    margin-top: 8px;
+    text-align: center;
+}
+
+.direct-link {
+    color: var(--mint);
+    font-size: 12px;
+    text-decoration: underline;
+    opacity: 0.85;
+    word-break: break-all;
+    display: inline-block;
+    padding: 2px 0;
+}
+.direct-link:hover {
+    color: var(--green);
+    opacity: 1;
+}
+
+.locked-note { 
+    font-size: 11px; 
+    color: var(--muted); 
+    margin-top: 8px; 
+    text-align: center;
+}
+
+.locked-note.success {
+    color: var(--mint);
+    font-weight: 600;
+}
+
+.tag {
+    font-size: 10px;
+    color: #06140e;
+    background: var(--green);
+    padding: 5px 9px;
+    border-radius: 999px;
+    position: absolute;
+    top: 16px;
+    right: 16px;
+    font-weight: 900;
+    letter-spacing: .5px;
+}
+
+.tag.unlocked { 
+    background: var(--gold); 
+    color: #2b1d00;
+}
+
+.tag.cert {
+    background: #38bdf8;
+    color: #041926;
+}
+
+.notice {
+    font-size: 12.5px;
+    border: 1px solid #2a6040;
+    border-radius: 12px;
+    padding: 12px 14px;
+    margin: 14px 0 0;
+    color: var(--mint);
+    background: rgba(16, 53, 35, 0.25);
+    line-height: 1.5;
+}
+
+.certificate {
+    background: #f8fff8;
+    color: #123522;
+    border: 9px double #21864b;
+    padding: 35px 25px;
+    text-align: center;
+    border-radius: 12px;
+    max-width: 850px;
+    margin: 20px auto;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.4);
+}
+
+.certificate h2 {
+    color: #176b3c;
+    font-size: clamp(24px, 4vw, 38px);
+    margin: 12px 0;
+    font-weight: 800;
+}
+
+.certificate .cert-name {
+    font-family: Georgia, serif;
+    font-size: clamp(26px, 5vw, 40px);
+    border-bottom: 2px solid #4b8c65;
+    display: inline-block;
+    padding: 6px 30px;
+    min-width: 250px;
+    color: #104c2b;
+    font-weight: bold;
+    margin: 8px 0;
+}
+
+.certificate p { color: #315a40; font-size: 14px; }
+
+.certificate-tools {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 14px;
+    max-width: 850px;
+    margin: 15px auto;
+}
+
+.footer { 
+    text-align: center; 
+    color: var(--muted); 
+    font-size: 12px; 
+    margin-top: 45px; 
+    line-height: 1.6;
+    padding-top: 25px;
+    border-top: 1px solid var(--line);
+}
+
+@media(max-width: 880px) {
+    .rewards { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .stats { grid-template-columns: repeat(3, 1fr); }
+}
+
+@media(max-width: 620px) {
+    header { padding: 14px 4%; }
+    .stats { grid-template-columns: 1fr; }
+    .profile-grid, .token-row { grid-template-columns: 1fr; }
+    .rewards, .certificate-tools { grid-template-columns: 1fr; }
+    main { padding: 18px 14px 40px; }
+}
+
+@media print {
+    body { background: white !important; color: #123522 !important; }
+    .no-print, header, .stats, .panel:not(#certificateArea), #catalogue, .progress-track, #digitalRewardsGrid, #physicalRewardsSection, .footer {
+        display: none !important;
+    }
+    #certificateArea {
+        border: none !important;
+        background: transparent !important;
+        box-shadow: none !important;
+        padding: 0 !important;
+        margin: 0 !important;
+        display: block !important;
+    }
+    main { padding: 0 !important; max-width: none !important; }
+    .certificate {
+        display: block !important;
+        margin: 0 auto !important;
+        max-width: 100% !important;
+        min-height: 90vh !important;
+        padding: 55px !important;
+        border: 10px double #21864b !important;
+        box-shadow: none !important;
+    }
+}
+</style>
+</head>
+
+<body>
+<header>
+    <div class="brand">🌍 ECO FUSION <span>360</span></div>
+    <div class="pill">♻ REWARD CENTER</div>
+</header>
+
+<main>
+
+<!-- Top Statistics Row -->
+<div class="stats">
+    <div class="stat">
+        <small>AVAILABLE GREEN TOKENS</small>
+        <strong id="statTokens">0</strong>
+    </div>
+
+    <div class="stat">
+        <small>REWARDS UNLOCKED</small>
+        <strong id="statUnlocked">0 / 6</strong>
+    </div>
+
+    <div class="stat">
+        <small>ECOSYSTEM POSITION</small>
+        <strong id="statPosition">Seedling</strong>
+    </div>
+</div>
+
+<!-- Reward Profile Panel -->
+<section class="panel">
+    <h2>Your reward profile</h2>
+    <p>Edit your display name and email below.</p>
+
+    <div class="profile-grid">
+        <div class="field">
+            <label for="userName">Display name</label>
+            <input id="userName" type="text" placeholder="Enter your name" value="Eco Champion">
+        </div>
+
+        <div class="field">
+            <label for="userEmail">Account email</label>
+            <input id="userEmail" type="email" placeholder="you@example.com" value="champion@ecofusion.org">
+        </div>
+    </div>
+
+    <div class="token-row">
+        <div class="field" style="margin: 0;">
+            <label for="userTokens">Green Tokens (demo preview)</label>
+            <input id="userTokens" type="number" min="0" step="50" value="0">
+        </div>
+        <button class="btn" type="button" onclick="saveProfile()" style="height: 44px; padding: 0 24px;">
+            Save profile
+        </button>
+    </div>
+
+    <div class="notice">
+        Standalone preview: data is stored in this browser. The token balance is editable for testing and is not verified by your Eco Fusion account. Connect this page to Flask and SQLite before using real rewards.
+    </div>
+</section>
+
+<!-- Digital Reading Rewards Section -->
+<div class="section-head" id="catalogue">
+    <div>
+        <h2>📚 Digital reading rewards</h2>
+        <p>Unlock rewards in order, from lowest to highest token cost.</p>
+    </div>
+</div>
+
+<div class="progress-track">
+    <div class="progress-bar" id="progressBar"></div>
+</div>
+
+<!-- Digital Reward Cards Grid -->
+<div class="rewards" id="digitalRewardsGrid">
+    <!-- Loaded dynamically below with Haikyu!!, Demon Slayer, Black Clover, Solo Leveling, Jujutsu Kaisen, and Certificate -->
+</div>
+
+<!-- Certificate Customization and Print Area -->
+<section id="certificateArea" class="panel" style="margin-top: 35px; display: none;">
+    <div class="section-head" style="margin-top: 0;">
+        <div>
+            <h2>🏅 Your Eco Achievement Certificate</h2>
+            <p>
+                Edit the recipient's name. Your ecosystem position is selected automatically
+                according to your Green Token balance, and you can edit it before printing.
+            </p>
+        </div>
+    </div>
+
+    <div class="certificate-tools no-print">
+        <div class="field">
+            <label for="certName">Certificate recipient name</label>
+            <input id="certName" maxlength="70" value="Eco Champion" oninput="updateCertificatePreview()">
+        </div>
+
+        <div class="field">
+            <label for="certPosition">Ecosystem position</label>
+            <select id="certPosition" onchange="updateCertificatePreview()">
+                <option value="Seedling">Seedling</option>
+                <option value="Eco Explorer">Eco Explorer</option>
+                <option value="Green Champion">Green Champion</option>
+                <option value="Planet Protector">Planet Protector</option>
+                <option value="Eco Guardian">Eco Guardian</option>
+            </select>
+        </div>
+    </div>
+
+    <div class="certificate" id="printCertificate">
+        <div style="font-size: 16px; letter-spacing: 4px; color: #21864b; font-weight: 800;">
+            🌍 ECO FUSION 360
+        </div>
+
+        <p style="letter-spacing: 3px; text-transform: uppercase; font-weight: 700; margin: 10px 0;">
+            Certificate of Achievement
+        </p>
+
+        <h2 id="certTitle">Eco Champion Certificate</h2>
+
+        <p>This certificate is proudly presented to</p>
+
+        <div class="cert-name" id="certNamePreview">Eco Champion</div>
+
+        <p>
+            In recognition of a meaningful commitment to responsible plastic
+            management and a greener planet.
+        </p>
+
+        <div style="font-size: 20px; font-weight: 800; color: #176b3c; margin: 18px 0;" id="certPositionPreview">
+            Seedling
+        </div>
+
+        <p>Keep reducing, reusing, recycling, and inspiring others.</p>
+
+        <div style="display: flex; justify-content: space-between; gap: 20px; margin-top: 35px; font-size: 12px; border-top: 1px dashed #7eb997; padding-top: 15px;">
+            <span>Eco Fusion 360<br>Smart Plastic Waste Management</span>
+            <span style="text-align: right;">
+                Verified Green Tokens: <strong id="certTokensPreview">0</strong><br>
+                Issued for Eco Impact
+            </span>
+        </div>
+    </div>
+
+    <div class="no-print" style="text-align: center; margin-top: 18px;">
+        <button class="btn" type="button" onclick="window.print()">
+            🖨️ Print / Save as PDF
+        </button>
+    </div>
+</section>
+
+<!-- Physical Eco Rewards Section -->
+<div class="section-head" id="physicalRewardsSection">
+    <div>
+        <h2>🎁 Physical eco rewards</h2>
+        <p>Physical reward requests are submitted for admin review.</p>
+    </div>
+</div>
+
+<div class="rewards">
+    <article class="reward">
+        <span class="tag">PHYSICAL</span>
+        <div class="reward-header">
+            <div class="reward-icon">🎋</div>
+            <div>
+                <h3>Bamboo Eco Flask</h3>
+            </div>
+        </div>
+        <p>Double-wall vacuum insulated flask made with organic sustainably harvested bamboo exterior. Keeps drinks cold for 24h.</p>
+        <div class="cost">✦ 500 Green Tokens</div>
+        <button class="btn full secondary" type="button" onclick="requestPhysicalReward('Bamboo Eco Flask', 500)">
+            Request physical reward
+        </button>
+    </article>
+
+    <article class="reward">
+        <span class="tag">PHYSICAL</span>
+        <div class="reward-header">
+            <div class="reward-icon">👜</div>
+            <div>
+                <h3>Recycled Ocean Tote Bag</h3>
+            </div>
+        </div>
+        <p>Durable heavy-duty shopping tote spun from 100% recycled coastal plastic waste. Washable and tear-resistant.</p>
+        <div class="cost">✦ 350 Green Tokens</div>
+        <button class="btn full secondary" type="button" onclick="requestPhysicalReward('Recycled Ocean Tote Bag', 350)">
+            Request physical reward
+        </button>
+    </article>
+
+    <article class="reward">
+        <span class="tag">PHYSICAL</span>
+        <div class="reward-header">
+            <div class="reward-icon">🌱</div>
+            <div>
+                <h3>Zero-Waste Steel Cutlery Kit</h3>
+            </div>
+        </div>
+        <p>Compact travel set including stainless steel chopsticks, fork, spoon, silicone straw and natural linen carry pouch.</p>
+        <div class="cost">✦ 450 Green Tokens</div>
+        <button class="btn full secondary" type="button" onclick="requestPhysicalReward('Zero-Waste Steel Cutlery Kit', 450)">
+            Request physical reward
+        </button>
+    </article>
+</div>
+
+<div class="footer">
+    Eco Fusion 360 · Smart Plastic Waste Management System<br>
+    Reading links open publisher/platform pages. Unlocking saves access to the link in your account;
+    it does not bypass a publisher's subscription or regional access rules.
+</div>
+
+</main>
+
+<script>
+// The 6 digital rewards configured with your requested titles and links
+const digitalRewards = [
+    {
+        id: "haikyu",
+        name: "Haikyu!!",
+        category: "manga",
+        cost: 100,
+        icon: "🏐",
+        badge: "MANGA",
+        description: "High-voltage volleyball saga following Shoyo Hinata's rise to the top at Karasuno High. Read the official release on VIZ Shonen Jump.",
+        url: "https://www.viz.com/shonenjump/haikyu-chapter-1/chapter/4118?action=read",
+        linkText: "Read Haikyu!! Chapter 1 ↗"
+    },
+    {
+        id: "demon_slayer",
+        name: "Demon Slayer: Kimetsu no Yaiba",
+        category: "manga",
+        cost: 250,
+        icon: "⚔️",
+        badge: "MANGA",
+        description: "Tanjiro Kamado embarks on a dangerous path to avenge his family and cure his demon-turned sister Nezuko. Official VIZ Media edition.",
+        url: "https://www.viz.com/manga-books/manga/demon-slayer-kimetsu-no-yaiba-volume-1-0/product/5547",
+        linkText: "Read Demon Slayer Vol. 1 ↗"
+    },
+    {
+        id: "black_clover",
+        name: "Black Clover",
+        category: "manga",
+        cost: 400,
+        icon: "🍀",
+        badge: "MANGA",
+        description: "In a world where magic is everything, Asta was born with no magical power at all. Read official digital chapters on MANGA Plus by Shueisha.",
+        url: "https://mangaplus.shueisha.co.jp/titles/100003?utm_source=chatgpt.com",
+        linkText: "Read Black Clover on MANGA Plus ↗"
+    },
+    {
+        id: "solo_leveling",
+        name: "Solo Leveling",
+        category: "manga",
+        cost: 600,
+        icon: "🗡️",
+        badge: "MANGA",
+        description: "Follow Sung Jinwoo from the world's weakest E-rank hunter to humanity's greatest shadow sovereign. Official reader release.",
+        url: "https://mangaplus.shueisha.co.jp/titles/100003?utm_source=chatgpt.com",
+        linkText: "Read Solo Leveling on MANGA Plus ↗"
+    },
+    {
+        id: "jujutsu_kaisen",
+        name: "Jujutsu Kaisen",
+        category: "manga",
+        cost: 800,
+        icon: "👹",
+        badge: "MANGA",
+        description: "Yuji Itadori swallows a legendary cursed talisman and plunges into the dark world of Jujutsu Sorcery. Read official VIZ release.",
+        url: "https://www.viz.com/manga-books/manga/jujutsu-kaisen-volume-0-0/product/6537",
+        linkText: "Read Jujutsu Kaisen Vol. 0 ↗"
+    },
+    {
+        id: "eco_certificate",
+        name: "Eco Champion Certificate",
+        category: "certificate",
+        cost: 1000,
+        icon: "🏅",
+        badge: "CERTIFICATE",
+        description: "Official Eco Fusion 360 Certificate of Achievement personalized with your name, ecosystem position, and verified token contribution.",
+        url: "#certificateArea",
+        linkText: "Personalise & Print Certificate 🏅"
+    }
+];
+
+// App State
+let appState = {
+    tokens: 0,
+    userName: "Eco Champion",
+    userEmail: "champion@ecofusion.org",
+    unlockedIds: []
+};
+
+// LocalStorage Persistence
+function loadState() {
+    try {
+        const saved = localStorage.getItem("ecofusion_reward_state");
+        if (saved) {
+            const parsed = JSON.parse(saved);
+            appState.tokens = typeof parsed.tokens === "number" ? parsed.tokens : 0;
+            appState.userName = parsed.userName || "Eco Champion";
+            appState.userEmail = parsed.userEmail || "champion@ecofusion.org";
+            appState.unlockedIds = Array.isArray(parsed.unlockedIds) ? parsed.unlockedIds : [];
+        }
+    } catch (e) {
+        console.warn("Storage not accessible, using memory state", e);
+    }
+}
+
+function saveState() {
+    try {
+        localStorage.setItem("ecofusion_reward_state", JSON.stringify(appState));
+    } catch (e) {
+        console.warn("Failed to save state", e);
+    }
+}
+
+function positionFromTokens(n) {
+    if (n >= 2000) return 'Eco Guardian';
+    if (n >= 1200) return 'Planet Protector';
+    if (n >= 700)  return 'Green Champion';
+    if (n >= 300)  return 'Eco Explorer';
+    return 'Seedling';
+}
+
+function renderHeaderStats() {
+    document.getElementById("statTokens").textContent = Number(appState.tokens).toLocaleString();
+    document.getElementById("statUnlocked").textContent = `${appState.unlockedIds.length} / ${digitalRewards.length}`;
+    document.getElementById("statPosition").textContent = positionFromTokens(appState.tokens);
+
+    const userNameInput = document.getElementById("userName");
+    const userEmailInput = document.getElementById("userEmail");
+    const userTokensInput = document.getElementById("userTokens");
+    const certNameInput = document.getElementById("certName");
+
+    if (userNameInput && document.activeElement !== userNameInput) userNameInput.value = appState.userName;
+    if (userEmailInput && document.activeElement !== userEmailInput) userEmailInput.value = appState.userEmail;
+    if (userTokensInput && document.activeElement !== userTokensInput) userTokensInput.value = appState.tokens;
+    if (certNameInput && document.activeElement !== certNameInput) certNameInput.value = appState.userName;
+
+    const progressPercent = Math.min(100, Math.round((appState.unlockedIds.length / digitalRewards.length) * 100));
+    document.getElementById("progressBar").style.width = progressPercent + "%";
+
+    updateCertificatePreview();
+}
+
+function saveProfile() {
+    const nameVal = document.getElementById("userName").value.trim();
+    const emailVal = document.getElementById("userEmail").value.trim();
+    const tokensVal = parseInt(document.getElementById("userTokens").value, 10);
+
+    appState.userName = nameVal || "Eco Champion";
+    appState.userEmail = emailVal || "champion@ecofusion.org";
+    appState.tokens = isNaN(tokensVal) || tokensVal < 0 ? 0 : tokensVal;
+
+    saveState();
+    renderHeaderStats();
+    renderRewardCards();
+}
+
+function unlockReward(id) {
+    const item = digitalRewards.find(r => r.id === id);
+    if (!item) return;
+
+    if (appState.tokens < item.cost) {
+        alert(`You need ${item.cost - appState.tokens} more Green Tokens to unlock ${item.name}!`);
+        return;
+    }
+
+    if (!appState.unlockedIds.includes(id)) {
+        appState.unlockedIds.push(id);
+        saveState();
+        renderHeaderStats();
+        renderRewardCards();
+
+        if (item.category === "certificate") {
+            openCertificate(item.name);
+        }
+    }
+}
+
+// Render the 6 cards with badges, buttons and links
+function renderRewardCards() {
+    const container = document.getElementById("digitalRewardsGrid");
+    if (!container) return;
+
+    let html = "";
+
+    digitalRewards.forEach((item) => {
+        const isUnlocked = appState.unlockedIds.includes(item.id);
+        const canUnlock = !isUnlocked && appState.tokens >= item.cost;
+        const neededTokens = item.cost - appState.tokens;
+
+        let tagClass = "tag";
+        let tagText = item.badge || "DIGITAL";
+        if (isUnlocked) {
+            tagClass = "tag unlocked";
+            tagText = "UNLOCKED ✓";
+        } else if (item.category === "certificate") {
+            tagClass = "tag cert";
+            tagText = "CERTIFICATE";
+        }
+
+        let actionHtml = "";
+        let noteHtml = "";
+
+        if (isUnlocked) {
+            if (item.category === "certificate") {
+                actionHtml = `
+                    <button class="btn secondary full" type="button" onclick="openCertificate('${item.name}')">
+                        🏅 Personalise & Print
+                    </button>
+                `;
+            } else {
+                actionHtml = `
+                    <a class="btn full read-now" href="${item.url}" target="_blank" rel="noopener noreferrer">
+                        📖 Open Reading Link ↗
+                    </a>
+                `;
+            }
+            noteHtml = `<div class="locked-note success">✓ Unlocked & saved to account. No second token charge.</div>`;
+        } else if (canUnlock) {
+            actionHtml = `
+                <button class="btn full" type="button" onclick="unlockReward('${item.id}')">
+                    Unlock for ${item.cost} Tokens
+                </button>
+            `;
+            noteHtml = `<div class="locked-note">One-time unlock for your Eco Fusion account.</div>`;
+        } else {
+            actionHtml = `
+                <button class="btn full" disabled>
+                    Need ${neededTokens} more tokens
+                </button>
+            `;
+            noteHtml = `<div class="locked-note">Earn more Green Tokens to unlock this reward.</div>`;
+        }
+
+        html += `
+            <article class="reward" id="card-${item.id}">
+                <span class="${tagClass}">${tagText}</span>
+
+                <div class="reward-header">
+                    <div class="reward-icon">${item.icon}</div>
+                    <div>
+                        <h3>${item.name}</h3>
+                    </div>
+                </div>
+
+                <p>${item.description}</p>
+
+                <div class="cost">✦ ${item.cost} Green Tokens</div>
+
+                ${actionHtml}
+
+                <div class="reading-link-wrapper">
+                    <a class="direct-link" href="${item.url}" target="_blank" rel="noopener noreferrer" title="${item.url}">
+                        ${item.linkText}
+                    </a>
+                </div>
+
+                ${noteHtml}
+            </article>
+        `;
+    });
+
+    container.innerHTML = html;
+}
+
+function updateCertificatePreview() {
+    const nameInput = document.getElementById("certName");
+    const posSelect = document.getElementById("certPosition");
+
+    const recipientName = (nameInput && nameInput.value.trim()) || appState.userName || "Eco Champion";
+    const position = (posSelect && posSelect.value) || positionFromTokens(appState.tokens);
+
+    const namePreview = document.getElementById("certNamePreview");
+    const posPreview = document.getElementById("certPositionPreview");
+    const tokensPreview = document.getElementById("certTokensPreview");
+
+    if (namePreview) namePreview.textContent = recipientName;
+    if (posPreview) posPreview.textContent = position;
+    if (tokensPreview) tokensPreview.textContent = Number(appState.tokens).toLocaleString();
+}
+
+function openCertificate(title) {
+    const certArea = document.getElementById("certificateArea");
+    if (!certArea) return;
+
+    certArea.style.display = "block";
+    if (title) {
+        document.getElementById("certTitle").textContent = title;
+    }
+
+    const posSelect = document.getElementById("certPosition");
+    if (posSelect) {
+        posSelect.value = positionFromTokens(appState.tokens);
+    }
+
+    updateCertificatePreview();
+    certArea.scrollIntoView({ behavior: "smooth" });
+}
+
+function requestPhysicalReward(name, cost) {
+    if (appState.tokens < cost) {
+        alert(`You need ${cost - appState.tokens} more Green Tokens to request the ${name}.`);
+    } else {
+        alert(`Request submitted for "${name}"! Our Eco Team will review and ship to your account address.`);
+    }
+}
+
+document.addEventListener("DOMContentLoaded", function() {
+    loadState();
+    renderHeaderStats();
+    renderRewardCards();
+
+    if (appState.unlockedIds.includes("eco_certificate")) {
+        document.getElementById("certificateArea").style.display = "block";
+    }
+});
+</script>
+
+</body>
+</html>
